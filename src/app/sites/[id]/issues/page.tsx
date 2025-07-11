@@ -12,7 +12,8 @@ import {
   FilterIcon,
   SearchIcon,
   ActivityIcon,
-  ServerIcon
+  ServerIcon,
+  EyeIcon
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -268,6 +269,16 @@ export default function SiteIssuesPage() {
                       )}
                     </div>
                   </div>
+                </div>
+                <div className="mt-4">
+                  <Button 
+                    size="sm" 
+                    variant="outline"
+                    onClick={() => window.location.href = `/sites/${siteId}/issues/${issue.id}`}
+                  >
+                    <EyeIcon size={14} className="mr-1" />
+                    Detayları Görüntüle
+                  </Button>
                 </div>
               </div>
             </div>

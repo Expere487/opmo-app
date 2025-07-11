@@ -1,5 +1,4 @@
 import { ChevronsUpDown } from "lucide-react"
-import { Select as SelectPrimitive } from "radix-ui"
 
 import Logo from "@/components/navbar-components/logo"
 import NotificationMenu from "@/components/navbar-components/notification-menu"
@@ -21,9 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import {
   Select,
-  SelectContent,
   SelectItem,
-  SelectValue,
 } from "@/components/ui/select"
 
 export default function Navbar() {
@@ -68,27 +65,16 @@ export default function Navbar() {
               </BreadcrumbItem>
               <BreadcrumbSeparator> / </BreadcrumbSeparator>
               <BreadcrumbItem>
-                <Select defaultValue="1">
-                  <SelectPrimitive.SelectTrigger
-                    aria-label="Select project"
-                    asChild
-                  >
-                    <Button
-                      variant="ghost"
-                      className="focus-visible:bg-accent text-foreground h-8 px-1.5 focus-visible:ring-0"
-                    >
-                      <SelectValue placeholder="Select project" />
-                      <ChevronsUpDown
-                        size={14}
-                        className="text-muted-foreground/80"
-                      />
-                    </Button>
-                  </SelectPrimitive.SelectTrigger>
-                  <SelectContent className="[&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2">
+                <div className="flex items-center gap-2">
+                  <Select defaultValue="1" className="h-8">
                     <SelectItem value="1">Main project</SelectItem>
                     <SelectItem value="2">Origin project</SelectItem>
-                  </SelectContent>
-                </Select>
+                  </Select>
+                  <ChevronsUpDown
+                    size={14}
+                    className="text-muted-foreground/80"
+                  />
+                </div>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
