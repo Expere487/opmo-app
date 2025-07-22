@@ -1,3 +1,6 @@
+import { redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 import { 
   GithubIcon, 
   GitBranchIcon, 
@@ -16,53 +19,25 @@ import {
 import { Button } from "@/components/ui/button";
 import { SimpleBarChart, SimpleLineChart } from "@/components/ui/chart";
 
-export default function Home() {
+export default async function Home() {
+  // Auth kontrolü
+  const session = await getServerSession(authOptions);
+  
+  if (!session) {
+    redirect('/login');
+  }
+
   return (
-    <div className="flex min-h-screen">
-      {/* Mobile Menu Button */}
-      <div className="lg:hidden fixed top-20 left-4 z-50">
-        <Button variant="outline" size="icon" className="bg-white dark:bg-gray-800">
-          <MenuIcon size={16} />
-        </Button>
-      </div>
-
-      {/* Sidebar */}
-      <aside className="w-64 border-r bg-gray-50 dark:bg-gray-900 p-6 hidden lg:block">
-        <nav className="space-y-2">
-          <a href="#" className="flex items-center space-x-3 text-sm font-medium text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800 rounded-lg px-3 py-2">
-            <ActivityIcon size={16} />
-            <span>Overview</span>
-          </a>
-          <a href="#" className="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg px-3 py-2">
-            <ServerIcon size={16} />
-            <span>Projects</span>
-          </a>
-          <a href="/sites" className="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg px-3 py-2">
-            <GlobeIcon size={16} />
-            <span>Websites</span>
-          </a>
-          <a href="#" className="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg px-3 py-2">
-            <GitBranchIcon size={16} />
-            <span>Deployments</span>
-          </a>
-          <a href="#" className="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg px-3 py-2">
-            <TrendingUpIcon size={16} />
-            <span>Analytics</span>
-          </a>
-          <a href="#" className="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg px-3 py-2">
-            <UsersIcon size={16} />
-            <span>Team</span>
-          </a>
-        </nav>
-      </aside>
-
+    <div className="">
       {/* Main Content */}
       <main className="flex-1 p-4 lg:p-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
           <div>
             <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
-            <p className="text-gray-600 dark:text-gray-300 mt-1 text-sm lg:text-base">Projelerinizi yönetin ve performansınızı izleyin</p>
+            <p className="text-gray-600 dark:text-gray-300 mt-1 text-sm lg:text-base">
+              Hoş geldiniz, {(session.user as any)?.username || session.user?.name}! Projelerinizi yönetin ve performansınızı izleyin
+            </p>
           </div>
           <Button className="flex items-center space-x-2 w-full sm:w-auto">
             <PlusIcon size={16} />

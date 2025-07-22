@@ -1,3 +1,6 @@
+"use client"
+
+import { useSession, signOut } from "next-auth/react"
 import {
   BoltIcon,
   BookOpenIcon,
@@ -24,55 +27,89 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 export default function UserMenu() {
+  const { data: session, status } = useSession()
+
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: '/login' })
+  }
+
+  const getInitials = (name?: string | null, email?: string | null) => {
+    if (name) {
+      return name.split(' ').map(n => n[0]).join('').toUpperCase()
+    }
+    if (email) {
+      return email[0].toUpperCase()
+    }
+    return 'U'
+  }
+
+  if (status === "loading") {
+    return (
+      <Avatar>
+        <AvatarFallback>...</AvatarFallback>
+      </Avatar>
+    )
+  }
+
+  if (!session) {
+    return (
+      <Avatar>
+        <AvatarFallback>U</AvatarFallback>
+      </Avatar>
+    )
+  }
+
+  const user = session.user as any
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
           <Avatar>
-            <AvatarImage src="./avatar.jpg" alt="Profile image" />
-            <AvatarFallback>KK</AvatarFallback>
+            <AvatarImage src={user?.image || ""} alt="Profile image" />
+            <AvatarFallback>{getInitials(user?.username || user?.name, user?.email)}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="max-w-64" align="end">
         <DropdownMenuLabel className="flex min-w-0 flex-col">
           <span className="text-foreground truncate text-sm font-medium">
-            Keith Kennedy
+            {user?.username || user?.name}
           </span>
           <span className="text-muted-foreground truncate text-xs font-normal">
-            k.kennedy@originui.com
+            {user?.email}
           </span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <BoltIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 1</span>
+            <span>Hesap Ayarları</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Layers2Icon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 2</span>
+            <span>Projelerim</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <BookOpenIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 3</span>
+            <span>Belgeler</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <PinIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 4</span>
+            <span>Takımlarım</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <UserPenIcon size={16} className="opacity-60" aria-hidden="true" />
-            <span>Option 5</span>
+            <span>Profili Düzenle</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>
           <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />
-          <span>Logout</span>
+          <span>Çıkış Yap</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -133,23 +133,6 @@ export default function SiteIssuesPage() {
 
   return (
     <div className="flex min-h-screen">
-      {/* Sidebar */}
-      <aside className="w-64 border-r bg-gray-50 dark:bg-gray-900 p-6 hidden lg:block">
-        <nav className="space-y-2">
-          <a href="/" className="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg px-3 py-2">
-            <ActivityIcon size={16} />
-            <span>Overview</span>
-          </a>
-          <a href="#" className="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg px-3 py-2">
-            <ServerIcon size={16} />
-            <span>Projects</span>
-          </a>
-          <a href="/sites" className="flex items-center space-x-3 text-sm font-medium text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800 rounded-lg px-3 py-2">
-            <GlobeIcon size={16} />
-            <span>Websites</span>
-          </a>
-        </nav>
-      </aside>
 
       {/* Main Content */}
       <main className="flex-1 p-4 lg:p-8">

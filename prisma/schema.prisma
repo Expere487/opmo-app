@@ -8,6 +8,51 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model users {
+  id             String    @id @default(cuid())
+  username       String    @unique
+  user_mail      String    @unique
+  hashedPassword String?   @db.LongText
+  created_at     DateTime  @default(now()) @db.Timestamp(0)
+  emailVerified  DateTime?
+  image          String?
+  name           String?
+
+  @@map("users")
+}
+
 model issues {
   id            Int             @id @default(autoincrement())
   site_id       Int
@@ -28,17 +73,29 @@ model issues {
 model sites {
   id         Int      @id @default(autoincrement())
   site_name  String?  @db.VarChar(255)
+  team_id    String?  @db.VarChar(255)
   site_url   String?  @db.VarChar(255)
   created_at DateTime @default(now()) @db.Timestamp(0)
   issues     issues[]
 }
 
-model users {
-  id             Int      @id @default(autoincrement()) @db.UnsignedInt
-  username       String?  @db.VarChar(255)
-  user_mail      String?  @db.VarChar(255)
-  hashedPassword String?  @db.LongText
-  created_at     DateTime @default(now()) @db.Timestamp(0)
+model team_users {
+  id         Int             @id @default(autoincrement()) @db.UnsignedInt
+  team_id    Int
+  user_id    String
+  role       team_users_role
+  created_at DateTime        @default(now()) @db.Timestamp(0)
+  teams      teams           @relation(fields: [team_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "team_users_team")
+
+  @@index([team_id], map: "team_users_team")
+  @@index([user_id], map: "team_users_user")
+}
+
+model teams {
+  id         Int          @id @default(autoincrement())
+  team_name  String?      @db.VarChar(255)
+  created_at DateTime     @default(now()) @db.Timestamp(0)
+  team_users team_users[]
 }
 
 enum issues_status {
@@ -53,4 +110,9 @@ enum issues_priority {
   medium
   high
   critical
+}
+
+enum team_users_role {
+  member
+  owner
 }

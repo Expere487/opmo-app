@@ -1,8 +1,14 @@
-'use client'
+import { ChevronsUpDown } from "lucide-react"
+import { Select as SelectPrimitive } from "radix-ui"
 
 import SettingsMenu from "@/components/navbar-components/settings-menu"
 import UserMenu from "@/components/navbar-components/user-menu"
-import { TeamSelector } from "@/components/team-selector"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import {
   NavigationMenu,
@@ -15,6 +21,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select"
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
@@ -23,7 +35,7 @@ const navigationLinks = [
   { href: "#", label: "API reference" },
 ]
 
-export default function Navbar() {
+export default function Component() {
   return (
     <header className="border-b px-4 md:px-6">
       <div className="flex h-16 items-center justify-between gap-4">
@@ -78,8 +90,59 @@ export default function Navbar() {
               </NavigationMenu>
             </PopoverContent>
           </Popover>
-          {/* Team Selector */}
-          <TeamSelector />
+          {/* Breadcrumb */}
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <Select defaultValue="personal">
+                  <SelectPrimitive.SelectTrigger
+                    aria-label="Select account type"
+                    asChild
+                  >
+                    <Button
+                      variant="ghost"
+                      className="focus-visible:bg-accent text-foreground h-8 p-1.5 focus-visible:ring-0"
+                    >
+                      <SelectValue placeholder="Select account type" />
+                      <ChevronsUpDown
+                        size={14}
+                        className="text-muted-foreground/80"
+                      />
+                    </Button>
+                  </SelectPrimitive.SelectTrigger>
+                  <SelectContent className="[&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2">
+                    <SelectItem value="personal">Personal</SelectItem>
+                    <SelectItem value="team">Team</SelectItem>
+                    <SelectItem value="business">Business</SelectItem>
+                  </SelectContent>
+                </Select>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator> / </BreadcrumbSeparator>
+              <BreadcrumbItem>
+                <Select defaultValue="1">
+                  <SelectPrimitive.SelectTrigger
+                    aria-label="Select project"
+                    asChild
+                  >
+                    <Button
+                      variant="ghost"
+                      className="focus-visible:bg-accent text-foreground h-8 p-1.5 focus-visible:ring-0"
+                    >
+                      <SelectValue placeholder="Select project" />
+                      <ChevronsUpDown
+                        size={14}
+                        className="text-muted-foreground/80"
+                      />
+                    </Button>
+                  </SelectPrimitive.SelectTrigger>
+                  <SelectContent className="[&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2">
+                    <SelectItem value="1">Main project</SelectItem>
+                    <SelectItem value="2">Origin project</SelectItem>
+                  </SelectContent>
+                </Select>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
         </div>
         {/* Right side */}
         <div className="flex items-center gap-4">
