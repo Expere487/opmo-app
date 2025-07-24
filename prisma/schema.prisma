@@ -41,14 +41,15 @@ model VerificationToken {
 }
 
 model users {
-  id             String    @id @default(cuid())
-  username       String    @unique
-  user_mail      String    @unique
-  hashedPassword String?   @db.LongText
-  created_at     DateTime  @default(now()) @db.Timestamp(0)
+  id             String       @id @default(cuid())
+  username       String       @unique
+  user_mail      String       @unique
+  hashedPassword String?      @db.LongText
+  created_at     DateTime     @default(now()) @db.Timestamp(0)
   emailVerified  DateTime?
   image          String?
   name           String?
+  team_users     team_users[]
 
   @@map("users")
 }
@@ -86,6 +87,7 @@ model team_users {
   role       team_users_role
   created_at DateTime        @default(now()) @db.Timestamp(0)
   teams      teams           @relation(fields: [team_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "team_users_team")
+  users      users           @relation(fields: [user_id], references: [id], onUpdate: Restrict, map: "team_users_user")
 
   @@index([team_id], map: "team_users_team")
   @@index([user_id], map: "team_users_user")

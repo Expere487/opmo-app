@@ -55,6 +55,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
+          console.log("Eksik bilgi");
           return null
         }
 
@@ -72,10 +73,12 @@ export const authOptions: NextAuthOptions = {
         })
 
         if (!user) {
+          console.log("Kullanıcı bulunamadı");
           return null
         }
 
         if (!user.hashedPassword) {
+          console.log("Şifre alanı yok");
           return null
         }
 
@@ -85,6 +88,7 @@ export const authOptions: NextAuthOptions = {
         )
 
         if (!isPasswordValid) {
+          console.log("Şifre yanlış");
           return null
         }
 
@@ -125,4 +129,4 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/login",
   }
-} 
+}
