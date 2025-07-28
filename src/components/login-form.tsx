@@ -80,7 +80,7 @@ export function LoginForm({
         if (onSuccess) {
           onSuccess()
         } else {
-          router.push("/")
+          router.push("/sites")
         }
       } else {
         // Login işlemi
@@ -98,7 +98,7 @@ export function LoginForm({
         if (onSuccess) {
           onSuccess()
         } else {
-          router.push("/")
+          router.push("/sites")
         }
       }
     } catch (error) {
