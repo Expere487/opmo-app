@@ -6,14 +6,14 @@ import { cn, positionClasses, roundedClasses } from '@/lib/utils'
 import { Button } from '../ui/button'
 import DesignCard from '../cards/DesignCard'
 
-interface TriggerSettings {
+export interface TriggerSettings {
     backgroundColor: string
     textColor: string
     roundedRatio: string
     position: string
 }
 
-interface PopupSettings {
+export interface PopupSettings {
     title: string
     description: string
     buttonColor: string

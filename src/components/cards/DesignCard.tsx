@@ -19,16 +19,6 @@ export default function DesignCard({ card, triggerSettings, setTriggerSettings, 
                             <Label htmlFor="bg-color">Arka Plan Rengi</Label>
                             <div className="flex gap-2 mt-1">
                                 <Input
-                                    id="bg-color"
-                                    type="color"
-                                    value={triggerSettings.backgroundColor}
-                                    onChange={(e) => setTriggerSettings(prev => ({
-                                        ...prev,
-                                        backgroundColor: e.target.value
-                                    }))}
-                                    className="w-20 h-10 p-1"
-                                />
-                                <Input
                                     value={triggerSettings.backgroundColor}
                                     onChange={(e) => setTriggerSettings(prev => ({
                                         ...prev,
@@ -37,31 +27,46 @@ export default function DesignCard({ card, triggerSettings, setTriggerSettings, 
                                     placeholder="#22c55e"
                                     className="flex-1"
                                 />
+                                <div className='w-10 h-10 relative'>
+                                    <Input
+                                        id="bg-color"
+                                        type="color"
+                                        value={triggerSettings.backgroundColor}
+                                        onChange={(e) => setTriggerSettings(prev => ({
+                                            ...prev,
+                                            backgroundColor: e.target.value
+                                        }))}
+                                        className="absolute top-0 left-0 w-full h-full p-0 m-0 cursor-pointer rounded-full"
+                                    />
+                                    <label style={{ backgroundColor: triggerSettings.backgroundColor }} htmlFor='bg-color' className="w-full h-full border border-gray-300 rounded-full absolute"></label>
+                                </div>
                             </div>
                         </div>
 
                         <div>
                             <Label htmlFor="text-color">Yazı Rengi</Label>
-                            <div className="flex gap-2 mt-1">
-                                <Input
-                                    id="text-color"
-                                    type="color"
-                                    value={triggerSettings.textColor}
-                                    onChange={(e) => setTriggerSettings(prev => ({
-                                        ...prev,
-                                        textColor: e.target.value
-                                    }))}
-                                    className="w-20 h-10 p-1"
-                                />
+                            <div className="flex gap-2 mt-1 ">
                                 <Input
                                     value={triggerSettings.textColor}
                                     onChange={(e) => setTriggerSettings(prev => ({
                                         ...prev,
                                         textColor: e.target.value
                                     }))}
-                                    placeholder="#ffffff"
                                     className="flex-1"
                                 />
+                                <div className='w-10 h-10 relative'>
+                                    <Input
+                                        id="text-color"
+                                        type="color"
+                                        value={triggerSettings.textColor}
+                                        onChange={(e) => setTriggerSettings(prev => ({
+                                            ...prev,
+                                            textColor: e.target.value
+                                        }))}
+                                        className="absolute top-0 left-0 w-full h-full p-0 m-0 cursor-pointer rounded-full"
+                                    />
+                                    <label style={{ backgroundColor: triggerSettings.textColor }} htmlFor='text-color' className="w-full h-full border border-gray-300 rounded-full absolute"></label>
+                                </div>
                             </div>
                         </div>
 
