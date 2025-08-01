@@ -28,6 +28,7 @@ import {
   Select,
   SelectItem,
 } from '@/components/ui/select'
+import { getPriorityColor, getStatusColor } from '@/lib/utils'
 
 interface Issue {
   id: number
@@ -113,7 +114,7 @@ export default function IssueDetailPage() {
       fetchIssue()
     }
   }, [issueId])
-
+console.log(issue)
   if (loading) {
     return (
       <div className="flex-1 p-4 lg:p-8">
@@ -146,27 +147,6 @@ export default function IssueDetailPage() {
     )
   }
 
-  // Status renkleri
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'new': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-      case 'in_progress': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
-      case 'resolved': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-      case 'wont_fix': return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
-    }
-  }
-
-  // Priority renkleri
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'critical': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-      case 'high': return 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200'
-      case 'medium': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
-      case 'low': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
-    }
-  }
 
   return (
     <div className="flex min-h-screen">
@@ -357,6 +337,37 @@ export default function IssueDetailPage() {
                 </div>
               </div>
             )}
+
+            {/* Breadcrumbs (Kullanıcı Aksiyonları) */}
+            {issue.diagnostics?.breadcrumbs && issue.diagnostics.breadcrumbs.length > 0 && (
+              <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                  Kullanıcı Aksiyonları (Breadcrumbs)
+                </h2>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full text-sm">
+                    <thead>
+                      <tr>
+                        <th className="px-2 py-1 text-left font-medium text-gray-700 dark:text-gray-300">Zaman</th>
+                        <th className="px-2 py-1 text-left font-medium text-gray-700 dark:text-gray-300">Aksiyon</th>
+                        <th className="px-2 py-1 text-left font-medium text-gray-700 dark:text-gray-300">Selector</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {issue.diagnostics.breadcrumbs.map((bc: any, idx: number) => (
+                        <tr key={idx} className="border-t border-gray-100 dark:border-gray-700">
+                          <td className="px-2 py-1 text-gray-900 dark:text-white">
+                            {new Date(bc.timestamp).toLocaleTimeString('tr-TR')}
+                          </td>
+                          <td className="px-2 py-1 text-gray-900 dark:text-white">{bc.type}</td>
+                          <td className="px-2 py-1 text-gray-900 dark:text-white">{bc.selector}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Yan Panel */}
@@ -535,4 +546,4 @@ export default function IssueDetailPage() {
       </main>
     </div>
   )
-} 
+}
